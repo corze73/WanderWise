@@ -15,6 +15,13 @@ export function useDestinations() {
   const fetchDestinations = async () => {
     try {
       setLoading(true);
+      
+      if (!supabase) {
+        setDestinations([]);
+        setLoading(false);
+        return;
+      }
+      
       const { data, error } = await supabase
         .from('destinations')
         .select('*')

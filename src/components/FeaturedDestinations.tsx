@@ -1,49 +1,24 @@
 import React from 'react';
 import { Star, Clock, Users } from 'lucide-react';
+import { useDestinations } from '../hooks/useDestinations';
 
 const FeaturedDestinations: React.FC = () => {
-  const destinations = [
-    {
-      id: 1,
-      name: 'Paris, France',
-      image: 'https://images.pexels.com/photos/161853/eiffel-tower-paris-france-tower-161853.jpeg?auto=compress&cs=tinysrgb&w=800',
-      rating: 4.8,
-      tours: 156,
-      duration: '3-7 days',
-      price: 299,
-      description: 'City of Light with iconic landmarks and romantic charm',
-    },
-    {
-      id: 2,
-      name: 'Tokyo, Japan',
-      image: 'https://images.pexels.com/photos/161401/fushimi-inari-taisha-shrine-kyoto-japan-temple-161401.jpeg?auto=compress&cs=tinysrgb&w=800',
-      rating: 4.9,
-      tours: 203,
-      duration: '4-10 days',
-      price: 449,
-      description: 'Modern metropolis blending tradition with innovation',
-    },
-    {
-      id: 3,
-      name: 'Santorini, Greece',
-      image: 'https://images.pexels.com/photos/1285625/pexels-photo-1285625.jpeg?auto=compress&cs=tinysrgb&w=800',
-      rating: 4.7,
-      tours: 89,
-      duration: '2-5 days',
-      price: 199,
-      description: 'Stunning sunsets and white-washed cliff-top villages',
-    },
-    {
-      id: 4,
-      name: 'Bali, Indonesia',
-      image: 'https://images.pexels.com/photos/2166553/pexels-photo-2166553.jpeg?auto=compress&cs=tinysrgb&w=800',
-      rating: 4.6,
-      tours: 134,
-      duration: '5-14 days',
-      price: 179,
-      description: 'Tropical paradise with temples, beaches, and culture',
-    },
-  ];
+  const { destinations, loading } = useDestinations();
+
+  if (loading) {
+    return (
+      <section className="py-16 lg:py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="animate-pulse">
+              <div className="h-8 bg-gray-300 rounded w-64 mx-auto mb-4"></div>
+              <div className="h-4 bg-gray-300 rounded w-96 mx-auto"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-16 lg:py-24 bg-gray-50">
@@ -65,13 +40,13 @@ const FeaturedDestinations: React.FC = () => {
             >
               <div className="relative overflow-hidden">
                 <img
-                  src={destination.image}
+                  src={destination.image_url || 'https://images.pexels.com/photos/161853/eiffel-tower-paris-france-tower-161853.jpeg?auto=compress&cs=tinysrgb&w=800'}
                   alt={destination.name}
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute top-4 right-4 bg-white bg-opacity-90 backdrop-blur-sm px-2 py-1 rounded-full flex items-center space-x-1">
                   <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                  <span className="text-sm font-medium">{destination.rating}</span>
+                  <span className="text-sm font-medium">{destination.average_rating.toFixed(1)}</span>
                 </div>
               </div>
 
@@ -86,11 +61,11 @@ const FeaturedDestinations: React.FC = () => {
                 <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
                   <div className="flex items-center space-x-1">
                     <Users className="h-4 w-4" />
-                    <span>{destination.tours} tours</span>
+                    <span>{destination.total_reviews} reviews</span>
                   </div>
                   <div className="flex items-center space-x-1">
                     <Clock className="h-4 w-4" />
-                    <span>{destination.duration}</span>
+                    <span>{destination.popular_months?.[0] || 'Year-round'}</span>
                   </div>
                 </div>
 
@@ -98,7 +73,7 @@ const FeaturedDestinations: React.FC = () => {
                   <div>
                     <span className="text-sm text-gray-500">From</span>
                     <div className="text-2xl font-bold text-blue-600">
-                      ${destination.price}
+                      $199
                     </div>
                   </div>
                   <button className="bg-gradient-to-r from-blue-600 to-teal-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all duration-200 font-medium">
